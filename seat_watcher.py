@@ -5,9 +5,6 @@ ASU seat watcher (cloud version, runs on GitHub Actions) - Spring 2027
 Two kinds of watches:
   mode "open"   -> urgent alert when a full section gets an open seat
   mode "change" -> alert whenever the open-seat count changes (e.g. 125 -> 124)
-
-Each GitHub run checks once a minute for about 4.5 minutes, and a new run
-starts every 5 minutes. Last seen counts are saved in state.json between runs.
 """
 
 import json
@@ -83,7 +80,6 @@ def _num(*vals):
 
 
 def read_seats(w):
-    """Return {class_number: (open_seats, capacity)} for this watch."""
     data = fetch_classes(w["subject"], w["number"])
     out = {}
     for item in data.get("classes", []):
@@ -115,7 +111,6 @@ def save_state(state):
 
 
 def check_all(state, alerted_open):
-    """One pass over every watch. Returns number of failed course lookups."""
     failures = 0
     for w in WATCHES:
         course = f"{w['subject']} {w['number']}"
@@ -179,7 +174,6 @@ def main():
         log("Test notification sent.")
         return
 
-    # BIO-style "open" alerts repeat once per run while a seat stays open
     alerted_open = set()
     start = time.time()
     total_checks = 0
@@ -193,7 +187,7 @@ def main():
         time.sleep(CHECK_EVERY_SECONDS)
 
     if all_failed == total_checks:
-        sys.exit(1)  # nothing worked this run: mark it red so GitHub emails you
+        sys.exit(1)
 
 
 if __name__ == "__main__":
