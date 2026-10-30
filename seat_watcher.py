@@ -27,7 +27,7 @@ WATCHES = [
 
 NTFY_TOPIC = os.environ.get("NTFY_TOPIC", "").strip()
 CHECK_EVERY_SECONDS = 60
-RUN_FOR_SECONDS = 270
+RUN_FOR_SECONDS = 3300
 STATE_FILE = "state.json"
 API = "https://eadvs-cscc-catalog-api.apps.asu.edu/catalog-microservices/api/v1/search/classes"
 PHOENIX = timezone(timedelta(hours=-7))
