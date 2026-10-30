@@ -1,0 +1,30 @@
+name: Seat watcher
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+    inputs:
+      test:
+        description: "Test mode (check once and send a test notification)"
+        type: boolean
+        default: true
+
+concurrency:
+  group: seat-watcher
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Check for open seats
+        env:
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+          TEST_MODE: ${{ github.event_name == 'workflow_dispatch' && inputs.test }}
+        run: python seat_watcher.py
