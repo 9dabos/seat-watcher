@@ -20,8 +20,6 @@ TERM = "2271"  # ASU code for Spring 2027
 WATCHES = [
     {"subject": "BIO", "number": "202", "mode": "open",
      "sections": {"27368": "Th 4:30-7:15 PM", "29383": "Th 1:15-4:00 PM"}},
-    {"subject": "IEE", "number": "320", "mode": "change",
-     "sections": {"15121": "Extreme Excel, iCourse"}},
 ]
 # ----------------------------------------------------------------
 
@@ -129,7 +127,7 @@ def check_all(state, alerted_open):
             prev = state.get(nbr)
 
             if w["mode"] == "open":
-                if open_n > 0 and nbr not in alerted_open:
+                if open_n > 0:
                     notify(f"SEAT OPEN: {course} #{nbr}",
                            f"{open_n} seat(s) open in {nbr} ({label}). Go add it NOW!",
                            click=search_link(w))
